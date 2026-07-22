@@ -96,10 +96,22 @@ Example with a non-root build and JDK 17:
 
 ### Example module
 
+The `example/` project depends on the locally published plugin and is the reference consumer for CI:
+
 ```bash
+# from repo root
+sbt publishLocal
 cd example
 sbt qualityGates
 ```
+
+Expected gate order inside `qualityGates`:
+
+1. `scalafmtCheckAll`
+2. `scalafixAll --check` (unless `qualityGatesScalafix := false`)
+3. `test` (unless `qualityGatesSkipTests := true`)
+
+If Scalafix fails with missing SemanticDB, confirm the plugin is enabled (it sets `semanticdbEnabled := true` automatically). Format-only failures should be fixed with `sbt scalafmtAll` before re-running the gate.
 
 ## CI
 
@@ -110,3 +122,5 @@ Pull requests and pushes to `main` / `develop` run `.github/workflows/ci.yml`, w
 - runs `qualityGates` inside `example/` on the same JDK matrix
 
 Gate failures fail the job; green means format, lint, and tests all passed on supported JDKs.
+
+Dependency updates for GitHub Actions are managed by Dependabot (`.github/dependabot.yml`) on a weekly schedule.
