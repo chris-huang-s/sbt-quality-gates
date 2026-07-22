@@ -105,7 +105,8 @@ sbt qualityGates
 
 Pull requests and pushes to `main` / `develop` run `.github/workflows/ci.yml`, which:
 
-- builds the plugin with `sbt compile`
-- runs `qualityGates` inside `example/`
+- runs a dedicated **Scalafmt** gate on the plugin and `example/` projects first
+- builds the plugin with `sbt compile` on a **JDK 17 / 21** matrix
+- runs `qualityGates` inside `example/` on the same JDK matrix
 
-Gate failures fail the job; green means format, lint, and tests all passed.
+Gate failures fail the job; green means format, lint, and tests all passed on supported JDKs.
