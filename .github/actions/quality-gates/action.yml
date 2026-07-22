@@ -1,0 +1,32 @@
+name: Quality Gates
+description: Run sbt qualityGates (Scalafmt, Scalafix, test) with JDK setup and caching.
+author: chris-huang-s
+
+inputs:
+  java-version:
+    description: Temurin JDK major version
+    required: false
+    default: "21"
+  working-directory:
+    description: Directory containing the sbt build
+    required: false
+    default: "."
+  sbt-args:
+    description: Extra arguments passed to sbt before qualityGates
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: ${{ inputs.java-version }}
+        cache: sbt
+
+    - name: Run quality gates
+      shell: bash
+      working-directory: ${{ inputs.working-directory }}
+      run: sbt ${{ inputs.sbt-args }} qualityGates
