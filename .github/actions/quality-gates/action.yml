@@ -4,15 +4,15 @@ author: chris-huang-s
 
 inputs:
   java-version:
-    description: Temurin JDK major version
+    description: Temurin JDK major version used for the quality gate run
     required: false
     default: "21"
   working-directory:
-    description: Directory containing the sbt build
+    description: Directory containing the sbt build (relative to the repository root)
     required: false
     default: "."
   sbt-args:
-    description: Extra arguments passed to sbt before qualityGates
+    description: Extra arguments passed to sbt before the qualityGates task (for example -batch)
     required: false
     default: ""
 
