@@ -7,8 +7,18 @@ class GatesDemoSuite extends munit.FunSuite {
     assertEquals(GatesDemo.clamp(99, 0, 10), 10)
   }
 
+  test("clamp returns the bound when min equals max") {
+    assertEquals(GatesDemo.clamp(3, 7, 7), 7)
+    assertEquals(GatesDemo.clamp(7, 7, 7), 7)
+  }
+
   test("average is empty for empty input") {
     assertEquals(GatesDemo.average(Seq.empty), None)
     assertEquals(GatesDemo.average(Seq(2, 4, 6)), Some(4.0))
+  }
+
+  test("average handles a single value and negatives") {
+    assertEquals(GatesDemo.average(Seq(9)), Some(9.0))
+    assertEquals(GatesDemo.average(Seq(-2, -4, -6)), Some(-4.0))
   }
 }
