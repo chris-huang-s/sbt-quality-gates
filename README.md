@@ -59,6 +59,41 @@ jobs:
 
 The action expects an sbt project at the repository root (or set `working-directory`).
 
+
+### Plugin options
+
+Override defaults in `build.sbt` when a repo needs a narrower gate:
+
+```scala
+qualityGatesSkipTests := false   // set true to run format+lint only
+qualityGatesScalafix  := true    // set false to skip Scalafix --check
+```
+
+| Setting | Default | Effect |
+| --- | --- | --- |
+| `qualityGatesSkipTests` | `false` | Skip the `test` step after format/lint |
+| `qualityGatesScalafix` | `true` | Include `scalafixAll --check` in the gate |
+
+SemanticDB is enabled automatically so Scalafix can run without extra boilerplate.
+
+### Action inputs
+
+| Input | Default | Description |
+| --- | --- | --- |
+| `java-version` | `21` | Temurin JDK major version |
+| `working-directory` | `.` | Directory that contains the sbt build |
+| `sbt-args` | _(empty)_ | Extra arguments passed to sbt before `qualityGates` |
+
+Example with a non-root build and JDK 17:
+
+```yaml
+- uses: chris-huang-s/sbt-quality-gates/.github/actions/quality-gates@main
+  with:
+    java-version: "17"
+    working-directory: example
+    sbt-args: "-batch"
+```
+
 ### Example module
 
 ```bash
